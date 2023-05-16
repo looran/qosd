@@ -10,9 +10,7 @@ $ tail -f /var/log/{messages,auth.log} | qosd -
 from pathlib import Path
 import argparse
 import fcntl
-import socket
 import signal
-import time
 import sys
 import os
 

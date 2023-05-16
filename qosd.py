@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-VERSION = "20230510"
+VERSION = "20230516"
 DESCRIPTION = "OSD from python"
 EXAMPLES = """examples:
 $ qosd hello

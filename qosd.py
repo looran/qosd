@@ -3,8 +3,8 @@
 VERSION = "20230510"
 DESCRIPTION = "OSD from python"
 EXAMPLES = """examples:
-qosd hello
-tail -f /var/log/{messages,auth.log} | qosd -
+$ qosd hello
+$ tail -f /var/log/{messages,auth.log} | qosd -
 """
 
 from pathlib import Path

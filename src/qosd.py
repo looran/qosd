@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-VERSION = "20230516"
+VERSION = "20230518"
 DESCRIPTION = "display text over your Xorg screen"
 EXAMPLES = """examples:
 $ qosd hello

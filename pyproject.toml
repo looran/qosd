@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qosd"
-authors = [ {name = "Laurent Ghigonis", email = "laurent.ghigonis@p1sec.com"}, ]
+authors = [ {name = "Laurent Ghigonis", email = "ooookiwi@gmail.com"}, ]
 description = "QOSD for python"
 readme = "README.md"
 requires-python = ">=3.0"

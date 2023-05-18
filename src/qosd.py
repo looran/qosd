@@ -67,8 +67,8 @@ class Qosd_win(QtWidgets.QMainWindow):
         self.move(coord[0], coord[1])
 
 class Qosd(object):
-    TIMEOUT = 2.5
-    MAXLINES = 20
+    TIMEOUT = 3
+    MAXLINES = 30
 
     def __init__(self, style, opacity, timeout=TIMEOUT, maxlines=MAXLINES, position=Qosd_win.POSITION, offset=(0,0), no_input=False):
         self.maxlines = maxlines

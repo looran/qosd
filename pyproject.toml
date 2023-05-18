@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qosd"
+authors = [ {name = "Laurent Ghigonis", email = "laurent.ghigonis@p1sec.com"}, ]
+description = "QOSD for python"
+readme = "README.md"
+requires-python = ">=3.0"
+keywords = ["osd", "on-screen-display", "tail"]
+license = {text = "BSD-3-Clause"}
+dependencies = [
+    "pyside6",
+    'importlib-metadata; python_version<"3.8"',
+]
+dynamic = ["version"]
+
+[project.scripts]
+qosd = "qosd:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "qosd.VERSION"}
+

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 VERSION = "20230516"
-DESCRIPTION = "OSD from python"
+DESCRIPTION = "display text over your Xorg screen"
 EXAMPLES = """examples:
 $ qosd hello
 $ tail -f /var/log/{messages,auth.log} | qosd -

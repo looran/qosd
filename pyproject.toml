@@ -22,3 +22,5 @@ qosd = "qosd:main"
 [tool.setuptools.dynamic]
 version = {attr = "qosd.VERSION"}
 
+[project.urls]
+"Homepage" = "https://github.com/looran/qosd"

@@ -6,6 +6,12 @@
 * tail stdin
 * transparency and text style is configurable
 
+# Install
+
+```
+pip install qosd
+```
+
 # Usage
 
 ```

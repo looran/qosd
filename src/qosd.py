@@ -108,10 +108,6 @@ class Qosd(object):
         self.stdin.activated.connect(self._cb_read_stdin)
         self.stdin.setEnabled(True)
 
-    def history(self, signum, stack):
-        self.win.close()
-        self.app.exit()
-
     def run(self):
         self.app.exec()
 

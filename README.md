@@ -15,9 +15,9 @@ pip install qosd
 # Usage
 
 ```
-usage: qosd [-h] [-i] [-m MAXLINES] [-n SESSION_NAME] [-o OPACITY] [-p {topleft,topright,bottomleft,bottomright}] [-P POSITION_OFFSET POSITION_OFFSET] [-s STYLE] [-t TIMEOUT] text [text ...]
+usage: qosd [-h] [-i] [-m MAXLINES] [-n SESSION_NAME] [-o OPACITY] [-p {topleft,topright,bottomleft,bottomright,center,centerleft,centerright}] [-P POSITION_OFFSET POSITION_OFFSET] [-s STYLE] [-t TIMEOUT] text [text ...]
 
-qosd - OSD from python - v20230516
+qosd - display text over your Xorg screen - v20230529
 
 positional arguments:
   text                  text to display, or '-' for stdin
@@ -31,7 +31,7 @@ options:
                         start named OSD display session, killing previous OSD with same session name
   -o OPACITY, --opacity OPACITY
                         default: 1.0
-  -p {topleft,topright,bottomleft,bottomright}, --position {topleft,topright,bottomleft,bottomright}
+  -p {topleft,topright,bottomleft,bottomright,center,centerleft,centerright}, --position {topleft,topright,bottomleft,bottomright,center,centerleft,centerright}
                         text position, default=topleft
   -P POSITION_OFFSET POSITION_OFFSET, --position-offset POSITION_OFFSET POSITION_OFFSET
                         offset in pixels from position, default: 0 0

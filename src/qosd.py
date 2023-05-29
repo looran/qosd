@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-VERSION = "20230518"
+VERSION = "20230529"
 DESCRIPTION = "display text over your Xorg screen"
 EXAMPLES = """examples:
 $ qosd hello
@@ -35,6 +35,7 @@ class Qosd_win(QtWidgets.QMainWindow):
 
         self.layout = QtWidgets.QHBoxLayout()
         self.label = QtWidgets.QLabel(self)
+        #self.label.setWordWrap(True) # word wrap breaks label heightForWidth()
         self.layout.addWidget(self.label)
         self.setLayout(self.layout)
 
@@ -54,17 +55,27 @@ class Qosd_win(QtWidgets.QMainWindow):
                 self.qosd.hide_or_exit()
         return True
 
-    def updatePosition(self):
+    def updateGeometry(self):
         sdim = self.screen().geometry()
+        ox, oy = self.offset[0], self.offset[1]
+        w = min(self.label.width(), sdim.width() - ox)
+        h = min(self.label.heightForWidth(w), sdim.height() - oy)
         if self.position == "topleft":
-            coord = (self.offset[0], self.offset[1])
+            x, y = ox, oy
         elif self.position == "topright":
-            coord = ((sdim.right()-self.width())-self.offset[0], self.offset[1])
+            x, y = sdim.width() - (w + ox), oy
         elif self.position == "bottomleft":
-            coord = (self.offset[0], (sdim.bottom()-self.height())+self.offset[1])
+            x, y = ox, sdim.height() - (h + oy)
         elif self.position == "bottomright":
-            coord = ((sdim.right()-self.width())-self.offset[0], (sdim.bottom()-self.height())-self.offset[1])
-        self.move(coord[0], coord[1])
+            x, y = sdim.width() - (w + ox), sdim.height() - (h + oy)
+        elif self.position == "center":
+            x, y = (sdim.width() / 2 - w / 2) + ox, (sdim.height() / 2 - h / 2) + oy
+        elif self.position == "centerleft":
+            x, y = ox, (sdim.height() / 2 - h / 2) + oy
+        elif self.position == "centerright":
+            x, y = sdim.width() - (w + ox), (sdim.height() / 2 - h / 2) + oy
+        self.move(x, y)
+        self.resize(w, h)
 
 class Qosd(object):
     TIMEOUT = 3
@@ -98,8 +109,7 @@ class Qosd(object):
             self.text_log = '\n'.join(lines[-self.maxlines:])
         self.win.label.setText(self.text_log.strip())
         self.win.label.adjustSize()
-        self.win.resize(self.win.label.width(), self.win.label.heightForWidth(self.win.label.width()))
-        self.win.updatePosition()
+        self.win.updateGeometry()
 
     def text_stdin(self):
         flags = fcntl.fcntl(sys.stdin, fcntl.F_GETFL)
@@ -180,7 +190,7 @@ def main():
     parser.add_argument('-m', '--maxlines', type=int, default=Qosd.MAXLINES, help='default: %s' % Qosd.MAXLINES)
     parser.add_argument('-n', '--session-name', help='start named OSD display session, killing previous OSD with same session name')
     parser.add_argument('-o', '--opacity', type=float, default=Qosd_win.OPACITY, help='default: %s' % Qosd_win.OPACITY)
-    parser.add_argument('-p', '--position', default=Qosd_win.POSITION, choices=["topleft", "topright", "bottomleft", "bottomright"], help='text position, default=%s' % Qosd_win.POSITION)
+    parser.add_argument('-p', '--position', default=Qosd_win.POSITION, choices=["topleft", "topright", "bottomleft", "bottomright", "center", "centerleft", "centerright"], help='text position, default=%s' % Qosd_win.POSITION)
     parser.add_argument('-P', '--position-offset', type=int, nargs=2, default=(0,0), help='offset in pixels from position, default: 0 0')
     parser.add_argument('-s', '--style', default=Qosd_win.STYLE, help='default: \'%s\'' % Qosd_win.STYLE)
     parser.add_argument('-t', '--timeout', type=float, default=Qosd.TIMEOUT, help='display timeout in seconds, default: %s' % Qosd.TIMEOUT)

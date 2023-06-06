@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-VERSION = "20230529"
+VERSION = "20230530"
 DESCRIPTION = "display text over your Xorg screen"
 EXAMPLES = """examples:
 $ qosd hello
@@ -80,6 +80,7 @@ class Qosd_win(QtWidgets.QMainWindow):
 class Qosd(object):
     TIMEOUT = 3
     MAXLINES = 30
+    STDIN_REFRESH_DELAY = 0.1 * 1000
 
     def __init__(self, style, opacity, timeout=TIMEOUT, maxlines=MAXLINES, position=Qosd_win.POSITION, offset=(0,0), no_input=False):
         self.maxlines = maxlines
@@ -117,6 +118,8 @@ class Qosd(object):
         self.stdin = QtCore.QSocketNotifier(sys.stdin.fileno(), QtCore.QSocketNotifier.Read, self.win)
         self.stdin.activated.connect(self._cb_read_stdin)
         self.stdin.setEnabled(True)
+        self.next_stdin = QtCore.QTimer()
+        self.next_stdin.timeout.connect(self._cb_next_stdin)
 
     def run(self):
         self.app.exec()
@@ -148,6 +151,7 @@ class Qosd(object):
             self.hide_to.stop()
 
     def _cb_read_stdin(self):
+        text = ""
         while True:
             try:
                 data = os.read(sys.stdin.fileno(), 1024)
@@ -159,9 +163,15 @@ class Qosd(object):
                 self.stdin.setEnabled(False)
                 self.stdin = None
                 break
-            text = data.decode(errors='ignore')
-            self.text(text)
+            text += data.decode(errors='ignore')
+        self.text(text)
         self.show()
+        self.stdin.setEnabled(False)
+        self.next_stdin.start(self.STDIN_REFRESH_DELAY)
+
+    def _cb_next_stdin(self):
+        self.next_stdin.stop()
+        self.stdin.setEnabled(True)
 
     @classmethod
     def clear_session(cls, session_name):
